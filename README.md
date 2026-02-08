@@ -11,7 +11,7 @@ Lab Members:
    Class: EE533 Spring 2026
    FPGA Assigned: nf9
 
-Lab 4 (Team Projects starting from this one)
+Lab 4 
 
 1. Connect, configure and measure the performance via iperf between the nodes on NetFPGA.
 2. Implement Lab 3's mini-IDS into NetFPGA.
