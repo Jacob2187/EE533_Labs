@@ -1,0 +1,53 @@
+Command line:
+   ./MAC_tb_isim_beh.exe
+     -intstyle  ise
+     -ipchost  localhost
+     -ipcport  1085
+
+Mon Mar 02 22:39:36 2026
+
+Total Line Count : 178
+
+ Elaboration Time: 0.0625 sec
+
+ Current Memory Usage: 142.541 Meg
+
+ Total Signals          : 245
+ Total Nets             : 1840
+ Total Signal Drivers   : 239
+ Total Blocks           : 6
+ Total Primitive Blocks : 3
+ Total Processes        : 242
+ Total Traceable Variables  : 35
+ Total Scalar Nets and Variables : 2357
+ntrace select -o on -n /MAC_tb/MAC_product 
+ntrace select -o on -n /MAC_tb/BF16_1_0 
+ntrace select -o on -n /MAC_tb/BF16_1_5 
+ntrace select -o on -n /MAC_tb/BF16_2_0 
+ntrace select -o on -n /MAC_tb/BF16_2_25 
+ntrace select -o on -n /MAC_tb/BF16_3_25 
+ntrace select -o on -n /MAC_tb/BF16_NEG_1_5 
+ntrace select -o on -n /MAC_tb/data0 
+ntrace select -o on -n /MAC_tb/data1 
+ntrace select -o on -n /MAC_tb/data2 
+ntrace select -o on -n /MAC_tb/uut/prod0 
+ntrace select -o on -n /MAC_tb/uut/prod1 
+ntrace select -o on -n /MAC_tb/uut/prod2 
+ntrace select -o on -n /MAC_tb/uut/prod3 
+ntrace select -o on -n /MAC_tb/uut/mac1_man0 
+ntrace select -o on -n /MAC_tb/uut/big_m0 
+ntrace select -o on -n /MAC_tb/uut/small_m0 
+ntrace select -o on -n /MAC_tb/uut/small_m0_extend 
+ntrace select -o on -n /MAC_tb/uut/small_m0_one 
+ntrace select -o on -n /MAC_tb/uut/e_diff0 
+ntrace start 
+isimrun 1000 ns 
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+
+ Total Simulation Time: 0.359375 sec
+
+ Current Memory Usage: 153.027 Meg
+
+Sat Mar 07 19:44:52 2026
+

@@ -1,0 +1,21 @@
+Determining compilation order of HDL files
+Analyzing Verilog file BF16_MAC.v
+Analyzing Verilog file MAC_tb.v
+Analyzing Verilog file C:/Xilinx/10.1/ISE/verilog/src/glbl.v
+Saving Verilog parse-tree work.BF16_MAC into c:/documents and
+settings/student/my documents/new folder/gpu/isim/work/@b@f16_@m@a@c.sdb
+Saving Verilog parse-tree work.MAC_tb into c:/documents and settings/student/my
+documents/new folder/gpu/isim/work/@m@a@c_tb.sdb
+Saving Verilog parse-tree work.glbl into c:/documents and settings/student/my
+documents/new folder/gpu/isim/work/glbl.sdb
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 54152 Kb
+Fuse CPU Usage: 468 ms
+Compiling module glbl
+Compiling module BF16_MAC
+Compiling module MAC_tb
+Compiled 3 Verilog Units
+Built simulation executable MAC_tb_isim_beh.exe
+Fuse Memory Usage: 58188 Kb
+Fuse CPU Usage: 671 ms

@@ -1,0 +1,1 @@
+sch2verilog -intstyle ise -family virtex2p   -w "C:/Documents and Settings/student/My Documents/EE533_Lab4/Logic_Analyzer/32-bit_ALU/ALU_32_9/Mux16to1.sch" Mux16to1.vf

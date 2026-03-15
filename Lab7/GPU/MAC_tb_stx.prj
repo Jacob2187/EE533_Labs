@@ -1,0 +1,3 @@
+verilog isim_temp "BF16_MAC.v"
+verilog isim_temp "MAC_tb.v"
+verilog isim_temp "C:/Xilinx/10.1/ISE/verilog/src/glbl.v"
