@@ -1,0 +1,280 @@
+#!/usr/bin/perl -w
+use strict;
+
+#
+# dmem_reg_tool.pl
+#
+# Simple register access helper for testing DMEM on NetFPGA host.
+# Uses the same regread/regwrite command-line utilities as the provided
+# pipeline_reg_tool.pl.  This script is written in the same style and
+# provides helpers to write 64-bit write-data, set addresses, trigger
+# write/read enable, and read back 64-bit read-data composed from two
+# 32-bit registers.
+#
+# DMEM register map (as requested)
+#   DMEM_WDATA_HI_REG   0x2000200
+#   DMEM_WDATA_LO_REG    0x2000204
+#   DMEM_ADDRW_REG        0x2000208
+#   DMEM_RDATA_HI_REG   0x200020c
+#   DMEM_RDATA_LO_REG    0x2000210
+#   DMEM_ADDRR_REG        0x2000214
+#   DMEM_WEN_REG          0x2000218
+#   DMEM_REN_REG          0x200021c
+#
+
+# -------------------- REGISTER ADDRESSES --------------------
+my $DMEM_WDATA_HI_REG = 0x2000300;
+my $DMEM_WDATA_LO_REG  = 0x2000304;
+my $DMEM_ADDRW_REG      = 0x2000308;
+my $DMEM_ADDRR_REG      = 0x2000314;
+my $DMEM_WEN_REG        = 0x2000318;
+my $DMEM_REN_REG        = 0x200031c;
+my $DMEM_RDATA_HI_REG = 0x200030c;
+my $DMEM_RDATA_LO_REG  = 0x2000310;
+# ---------------------------------------------------------------------
+
+# Wrap regwrite/regread. Adjust path to regwrite/regread if needed.
+sub regwrite {
+   my( $addr, $value ) = @_;
+   my $cmd = sprintf( "regwrite 0x%08x 0x%08x", $addr, $value & 0xFFFFFFFF );
+   my $result = `$cmd 2>&1`;
+   return $result;
+}
+
+sub regread {
+   my( $addr ) = @_;
+   my $cmd = sprintf( "regread 0x%08x", $addr );
+   my @out = `$cmd 2>&1`;
+
+   foreach my $line (@out) {
+      # verbose format: Reg 0xADDR (DEC): 0xVALUE (DEC)
+      if ( $line =~ m/Reg\s+(0x[0-9a-fA-F]+)\s+\(\d+\):\s+(0x[0-9a-fA-F]+)\s+\(\d+\)/ ) {
+         return $2;
+      }
+      # simple form: plain hex on a line
+      if ( $line =~ m/^\s*(0x[0-9a-fA-F]+)\s*$/ ) {
+         return $1;
+      }
+   }
+   # fallback: return joined output
+   return join("", @out);
+}
+
+# Compose/parse helpers
+sub parse_num {
+   my ($s) = @_;
+   return 0 unless defined $s;
+   $s =~ s/^\s+|\s+$//g;
+   $s =~ s/^0x//i;
+   if ($s =~ /^[0-9a-fA-F]+$/) { return hex($s); }
+   return int($s);
+}
+
+# ----------------- DMEM helpers -----------------
+
+# Write full 64-bit write-data (split to hi/lo), write addr, pulse WEN.
+# Usage: write_dmem_word(<addr32>, <data64_hex_or_dec>)
+sub write_dmem_word {
+   my ($addr32, $data64) = @_;
+   my $v = parse_num($data64);
+   my $hi = ($v >> 32) & 0xFFFFFFFF;
+   my $lo = $v & 0xFFFFFFFF;
+
+   # write data hi/lo
+   regwrite($DMEM_WDATA_HI_REG, $hi);
+   regwrite($DMEM_WDATA_LO_REG,  $lo);
+
+   # write address
+   regwrite($DMEM_ADDRW_REG, parse_num($addr32));
+
+   # trigger write enable: write 1 then 0 (pulse)
+   regwrite($DMEM_WEN_REG, 1);
+   # small delay may be necessary on real hw; leave it to user to wait/poll
+   regwrite($DMEM_WEN_REG, 0);
+}
+
+# Trigger a read of <addr32> and return composed 64-bit read data.
+# This pulses REN=1 then reads RDATA_HIGH/LOW.
+# Usage: my $read64 = read_dmem_word(<addr32>);
+sub read_dmem_word {
+   my ($addr32) = @_;
+   # set read address
+   regwrite($DMEM_ADDRR_REG, parse_num($addr32));
+
+   # pulse REN
+   regwrite($DMEM_REN_REG, 1);
+   regwrite($DMEM_REN_REG, 0);
+
+   # read low/high (some hw may update hi/lo in one cycle later; caller may need to wait)
+   my $lo_s = regread($DMEM_RDATA_LO_REG);
+   my $hi_s = regread($DMEM_RDATA_HI_REG);
+
+   my $hi = defined $hi_s ? parse_num($hi_s) : 0;
+   my $lo = defined $lo_s ? parse_num($lo_s) : 0;
+
+   # format as 0xHHHHLLLLLLLL
+   my $combined = sprintf("0x%08x%08x", $hi, $lo);
+   return $combined;
+}
+
+# Convenience setters for individual regs (if user wants)
+sub set_wdata_hi { my $v = shift; regwrite($DMEM_WDATA_HI_REG, parse_num($v)); }
+sub set_wdata_lo { my $v = shift; regwrite($DMEM_WDATA_LO_REG,  parse_num($v)); }
+sub set_addrw    { my $v = shift; regwrite($DMEM_ADDRW_REG,        parse_num($v)); }
+sub set_addrr    { my $v = shift; regwrite($DMEM_ADDRR_REG,        parse_num($v)); }
+sub set_wen      { my $v = shift; regwrite($DMEM_WEN_REG,          parse_num($v)); }
+sub set_ren      { my $v = shift; regwrite($DMEM_REN_REG,          parse_num($v)); }
+
+# Read raw registers individually
+sub read_wdata_hi { return regread($DMEM_WDATA_HI_REG); }
+sub read_wdata_lo { return regread($DMEM_WDATA_LO_REG); }
+sub read_rdata_hi { return regread($DMEM_RDATA_HI_REG); }
+sub read_rdata_lo { return regread($DMEM_RDATA_LO_REG); }
+sub read_addrw    { return regread($DMEM_ADDRW_REG); }
+sub read_addrr    { return regread($DMEM_ADDRR_REG); }
+sub read_wen      { return regread($DMEM_WEN_REG); }
+sub read_ren      { return regread($DMEM_REN_REG); }
+
+# Dump the DMEM relevant registers (raw 32-bit and composed 64-bit)
+sub dump_allregs {
+   my $wdata_hi = read_wdata_hi();
+   my $wdata_lo = read_wdata_lo();
+   my $addrw    = read_addrw();
+   my $rdata_hi = read_rdata_hi();
+   my $rdata_lo = read_rdata_lo();
+   my $addrr    = read_addrr();
+   my $wen      = read_wen();
+   my $ren      = read_ren();
+
+   print "DMEM registers (raw 32-bit reads):\n";
+   print sprintf("  WDATA_HIGH (0x%08x): %s\n", $DMEM_WDATA_HI_REG, ($wdata_hi // ""));
+   print sprintf("  WDATA_LOW  (0x%08x): %s\n", $DMEM_WDATA_LO_REG,  ($wdata_lo // ""));
+   print sprintf("  ADDRW      (0x%08x): %s\n", $DMEM_ADDRW_REG,     ($addrw // ""));
+   print sprintf("  RDATA_HIGH (0x%08x): %s\n", $DMEM_RDATA_HI_REG,($rdata_hi // ""));
+   print sprintf("  RDATA_LOW  (0x%08x): %s\n", $DMEM_RDATA_LO_REG, ($rdata_lo // ""));
+   print sprintf("  ADDRR      (0x%08x): %s\n", $DMEM_ADDRR_REG,     ($addrr // ""));
+   print sprintf("  WEN        (0x%08x): %s\n", $DMEM_WEN_REG,       ($wen // ""));
+   print sprintf("  REN        (0x%08x): %s\n", $DMEM_REN_REG,       ($ren // ""));
+
+   # Compose 64-bit values
+   my $w_hi = defined $wdata_hi ? parse_num($wdata_hi) : 0;
+   my $w_lo = defined $wdata_lo ? parse_num($wdata_lo) : 0;
+   my $r_hi = defined $rdata_hi ? parse_num($rdata_hi) : 0;
+   my $r_lo = defined $rdata_lo ? parse_num($rdata_lo) : 0;
+
+   my $w64 = sprintf("0x%08x%08x", $w_hi, $w_lo);
+   my $r64 = sprintf("0x%08x%08x", $r_hi, $r_lo);
+
+   print "Composed values:\n";
+   print "  last_wdata_64 = $w64\n";
+   print "  last_rdata_64 = $r64\n";
+}
+
+# ------------------- CLI ---------------------
+sub usage {
+   print <<"USAGE";
+Usage: dmem_reg_tool.pl <cmd> [args]
+
+Commands:
+  write_dmem_word <addr32> <data64>
+      - Write a 64-bit data to DMEM at <addr32>:
+        writes WDATA_HI/LO, ADDRW, pulses WEN.
+        Example: write_dmem_word 0x12 0xDEADBEEFDEADBEEF
+
+  read_dmem_word <addr32>
+      - Trigger a read of <addr32> (pulse REN) and print the composed 64-bit read-data.
+
+  set_wdata_hi <32-bit value>
+  set_wdata_lo <32-bit value>
+  set_addrw <32-bit value>
+  set_addrr <32-bit value>
+  set_wen <0|1>
+  set_ren <0|1>
+
+  read_wdata_hi
+  read_wdata_lo
+  read_rdata_hi
+  read_rdata_lo
+  read_addrw
+  read_addrr
+  read_wen
+  read_ren
+
+  dump_allregs
+      - Print all DMEM registers (raw and composed).
+
+  help
+
+Notes:
+ - The script uses the 'regread' and 'regwrite' helper programs available in the NetFPGA environment.
+ - For some hardware/soft blocks you may need to wait a few cycles between pulsing WEN/REN and reading results.
+USAGE
+}
+
+my $n = @ARGV;
+if ($n < 1) { usage(); exit(1) }
+my $cmd = shift @ARGV;
+
+if ($cmd eq "write_dmem_word") {
+   if (@ARGV < 2) { usage(); exit(1) }
+   write_dmem_word($ARGV[0], $ARGV[1]);
+   print "WROTE DMEM addr=$ARGV[0] data=$ARGV[1]\n";
+}
+elsif ($cmd eq "read_dmem_word") {
+   if (@ARGV < 1) { usage(); exit(1) }
+   my $r = read_dmem_word($ARGV[0]);
+   print "READ DMEM addr=$ARGV[0] data=$r\n";
+}
+elsif ($cmd eq "set_wdata_hi") {
+   set_wdata_hi($ARGV[0]); print "Set WDATA_HIGH=$ARGV[0]\n";
+}
+elsif ($cmd eq "set_wdata_lo") {
+   set_wdata_lo($ARGV[0]); print "Set WDATA_LOW=$ARGV[0]\n";
+}
+elsif ($cmd eq "set_addrw") {
+   set_addrw($ARGV[0]); print "Set ADDRW=$ARGV[0]\n";
+}
+elsif ($cmd eq "set_addrr") {
+   set_addrr($ARGV[0]); print "Set ADDRR=$ARGV[0]\n";
+}
+elsif ($cmd eq "set_wen") {
+   set_wen($ARGV[0]); print "Set WEN=$ARGV[0]\n";
+}
+elsif ($cmd eq "set_ren") {
+   set_ren($ARGV[0]); print "Set REN=$ARGV[0]\n";
+}
+elsif ($cmd eq "read_wdata_hi") {
+   print regread($DMEM_WDATA_HI_REG) . "\n";
+}
+elsif ($cmd eq "read_wdata_lo") {
+   print regread($DMEM_WDATA_LO_REG) . "\n";
+}
+elsif ($cmd eq "read_rdata_hi") {
+   print regread($DMEM_RDATA_HI_REG) . "\n";
+}
+elsif ($cmd eq "read_rdata_lo") {
+   print regread($DMEM_RDATA_LO_REG) . "\n";
+}
+elsif ($cmd eq "read_addrw") {
+   print regread($DMEM_ADDRW_REG) . "\n";
+}
+elsif ($cmd eq "read_addrr") {
+   print regread($DMEM_ADDRR_REG) . "\n";
+}
+elsif ($cmd eq "read_wen") {
+   print regread($DMEM_WEN_REG) . "\n";
+}
+elsif ($cmd eq "read_ren") {
+   print regread($DMEM_REN_REG) . "\n";
+}
+elsif ($cmd eq "dump_allregs") {
+   dump_allregs();
+}
+elsif ($cmd eq "help") {
+   usage();
+}
+else {
+   print "Unknown cmd: $cmd\n";
+   usage();
+   exit(1);
+}

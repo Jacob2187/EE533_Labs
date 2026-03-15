@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nf:module xmlns:nf="http://www.NetFPGA.org/NF2_register_system" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.NetFPGA.org/NF2_register_system NF2_register_system.xsd ">
+	<nf:name>DMEM</nf:name>
+	<nf:prefix>DMEM</nf:prefix>
+	<nf:location>udp</nf:location>
+	<nf:description>Registers for DMEM</nf:description>
+	<nf:blocksize>64</nf:blocksize>
+	<nf:registers>
+		<nf:register>
+		  <nf:name>wdata_hi</nf:name>
+			<nf:description>Upper 32 bits of wdata</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>wdata_lo</nf:name>
+			<nf:description>Lower 32 bits of wdata</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>addrw</nf:name>
+			<nf:description>Write Address</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+        	<nf:register>
+		  <nf:name>rdata_hi</nf:name>
+			<nf:description>Output Register high</nf:description>
+			<nf:type>generic_hardware32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>rdata_lo</nf:name>
+			<nf:description>Output Register low</nf:description>
+			<nf:type>generic_hardware32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>addrr</nf:name>
+			<nf:description>Read address</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>wen</nf:name>
+			<nf:description>Write enable</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>ren</nf:name>
+			<nf:description>Read enable</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+	</nf:registers>
+</nf:module>
