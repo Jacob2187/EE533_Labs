@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nf:module xmlns:nf="http://www.NetFPGA.org/NF2_register_system" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.NetFPGA.org/NF2_register_system NF2_register_system.xsd ">
+	<nf:name>ALU</nf:name>
+	<nf:prefix>ALU</nf:prefix>
+	<nf:location>udp</nf:location>
+	<nf:description>Registers for ALU</nf:description>
+	<nf:blocksize>64</nf:blocksize>
+	<nf:registers>
+		<nf:register>
+		  <nf:name>A_high</nf:name>
+			<nf:description>Upper 32 bits of A</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>A_low</nf:name>
+			<nf:description>Lower 32 bits of A</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>ALUCTRL</nf:name>
+			<nf:description>Control Register</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+        	<nf:register>
+		  <nf:name>Z_high</nf:name>
+			<nf:description>Output Register</nf:description>
+			<nf:type>generic_hardware32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>Z_low</nf:name>
+			<nf:description>Output Register</nf:description>
+			<nf:type>generic_hardware32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>B_high</nf:name>
+			<nf:description>Upper 32 bits of B</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+		<nf:register>
+		  <nf:name>B_low</nf:name>
+			<nf:description>Lower 32 bits of B</nf:description>
+			<nf:type>generic_software32</nf:type>
+		</nf:register>
+	</nf:registers>
+</nf:module>
