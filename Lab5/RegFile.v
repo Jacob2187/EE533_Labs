@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-//This is designed with 64-bit inputs and output with 16 register files, just like Lab 5 Figure 2 
+//This is designed exactly like Lab 5 Figure 2 
 //Even the namings of inputs and outputs are all the same
 
 module RegFile(
