@@ -1,0 +1,117 @@
+Determining compilation order of HDL files
+Analyzing Verilog file RF_WB_data_src_MUX.v
+Analyzing Verilog file RF.v
+Analyzing Verilog file PC_plus_1.v
+Analyzing Verilog file PC_MUX.v
+Analyzing Verilog file PC.v
+Analyzing Verilog file Offset_Extend.v
+Analyzing Verilog file M_WB_Reg.v
+Analyzing Verilog file I_MEM.v
+Analyzing Verilog file IF_ID_Reg.v
+Analyzing Verilog file ID_EX_Reg.v
+Analyzing Verilog file EX_M_Reg.v
+Analyzing Verilog file Copy of D_MEM.v
+Analyzing Verilog file Copy of D_addr_src_MUX.v
+Analyzing Verilog file Copy of Control_Unit.v
+Analyzing Verilog file Copy of Branch_Detection_Unit.v
+Analyzing Verilog file Copy of ALU_src_MUX.v
+Analyzing Verilog file ALU.v
+Analyzing Verilog file Pipeline.v
+Analyzing Verilog file Pipeline_tb.v
+Analyzing Verilog file C:/Xilinx/10.1/ISE/verilog/src/glbl.v
+Saving Verilog parse-tree work.RF_WB_data_src_MUX into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@r@f_@w@b_data_src_@m@u@x.sdb
+Saving Verilog parse-tree work.RF into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@r@f.sdb
+Saving Verilog parse-tree work.PC_plus_1 into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@p@c_plus_1.sdb
+Saving Verilog parse-tree work.PC_MUX into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@p@c_@m@u@x.sdb
+Saving Verilog parse-tree work.PC into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@p@c.sdb
+Saving Verilog parse-tree work.Offset_Extend into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@offset_@extend.sdb
+Saving Verilog parse-tree work.M_WB_Reg into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@m_@w@b_@reg.sdb
+Saving Verilog parse-tree work.I_MEM into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@i_@m@e@m.sdb
+Saving Verilog parse-tree work.IF_ID_Reg into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@i@f_@i@d_@reg.sdb
+Saving Verilog parse-tree work.ID_EX_Reg into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@i@d_@e@x_@reg.sdb
+Saving Verilog parse-tree work.EX_M_Reg into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@e@x_@m_@reg.sdb
+Saving Verilog parse-tree work.D_MEM into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@d_@m@e@m.sdb
+Saving Verilog parse-tree work.D_addr_src_MUX into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@d_addr_src_@m@u@x.sdb
+Saving Verilog parse-tree work.Control_Unit into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@control_@unit.sdb
+Saving Verilog parse-tree work.Branch_Detection_Unit into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@branch_@detection_@unit.sdb
+Saving Verilog parse-tree work.ALU_src_MUX into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@a@l@u_src_@m@u@x.sdb
+Saving Verilog parse-tree work.ALU into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@a@l@u.sdb
+Saving Verilog parse-tree work.Pipeline into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@pipeline.sdb
+Saving Verilog parse-tree work.Pipeline_tb into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/@pipeline_tb.sdb
+Saving Verilog parse-tree work.glbl into c:/documents and
+settings/student/desktop/usc_ee533_lab7-main/usc_ee533_lab7-main/lab7/project/la
+b7/isim/work/glbl.sdb
+Starting static elaboration
+Restoring Verilog parse-tree xilinxcorelib_ver.BLKMEMDP_V6_3 from
+c:/xilinx/10.1/ise/verilog/hdp/nt/xilinxcorelib_ver/xilinxcorelib_ver.sdbl
+WARNING:HDLCompiler:1016 - "Pipeline_tb.v" Line 101. Port SUBI_ID is not
+   connected to this instance
+WARNING:HDLCompiler:1016 - "Pipeline.v" Line 432. Port rt_data_M is not
+   connected to this instance
+Completed static elaboration
+Fuse Memory Usage: 55176 Kb
+Fuse CPU Usage: 108 ms
+Compiling module glbl
+Compiling module PC
+Compiling module PC_MUX
+Compiling module BLKMEMDP_V6_3(c_addra_width=9,c_...
+Compiling module I_MEM
+Compiling module IF_ID_Reg
+Compiling module RF
+Compiling module Control_Unit
+Compiling module Offset_Extend
+Compiling module ID_EX_Reg
+Compiling module ALU
+Compiling module ALU_src_MUX
+Compiling module EX_M_Reg
+Compiling module D_addr_src_MUX
+Compiling module BLKMEMDP_V6_3(c_addra_width=8,c_...
+Compiling module D_MEM
+Compiling module M_WB_Reg
+Compiling module RF_WB_data_src_MUX
+Compiling module PC_plus_1
+Compiling module Branch_Detection_Unit
+Compiling module Pipeline
+Compiling module Pipeline_tb
+Compiled 22 Verilog Units
+Built simulation executable Pipeline_tb_isim_beh.exe
+Fuse Memory Usage: 59788 Kb
+Fuse CPU Usage: 249 ms
